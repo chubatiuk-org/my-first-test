@@ -1,0 +1,18 @@
+<suite parallel="methods" thread-count="10" name="Yuliia first test Suite">
+
+    <test name="Input Field Test">
+        <classes>
+            <class name="com.abc.InputTest">
+                <methods>
+                    <include name="test4" />
+                </methods>
+            </class>
+            <class name="com.abc.LoginTest">
+                <methods>
+                    <include name="test5" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
