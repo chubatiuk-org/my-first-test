@@ -1,17 +1,14 @@
-package com.browser;
+package browser;
 
-import com.abc.BaseTest;
-import com.util.ConfigReader;
+import util.ConfigReader;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.time.Duration;
 import java.util.HashMap;
 
 public class DriverManager {
@@ -26,7 +23,7 @@ public class DriverManager {
                 var map = new HashMap<String, Object>();
 
                 map.put("profile.password_manager_leak_detection", false);
-                map.put("download.default_directory", new File(BaseTest.PATH_TO_DOWNLOAD).getAbsolutePath());
+                map.put("download.default_directory", new File(ConfigReader.getProperty("PATH_TO_DOWNLOAD")).getAbsolutePath());
 
                 chromeOptions.setExperimentalOption("prefs", map);
 
@@ -40,7 +37,7 @@ public class DriverManager {
                 var firefoxOptions = new FirefoxOptions();
 
                 firefoxOptions.addPreference("browser.download.folderList", 2); // Use custom location
-                firefoxOptions.addPreference("browser.download.dir", new File(BaseTest.PATH_TO_DOWNLOAD).getAbsolutePath());
+                firefoxOptions.addPreference("browser.download.dir", new File(ConfigReader.getProperty("PATH_TO_DOWNLOAD")).getAbsolutePath());
                 firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf"); // Change MIME type as needed
                 firefoxOptions.addPreference("pdfjs.disabled", true); // Disable built-in PDF viewer
                 firefoxOptions.addPreference("signon.rememberSignons", false); // Disable password manager

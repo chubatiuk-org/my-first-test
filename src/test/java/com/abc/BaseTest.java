@@ -1,28 +1,19 @@
 package com.abc;
 
-import com.browser.DriverManager;
-import com.util.ConfigReader;
-import org.apache.commons.exec.CommandLine;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import browser.DriverManager;
+import util.ConfigReader;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.io.File;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class BaseTest {
 
     public static final String PATH_TO_UPLOAD = "src/test/resources/upload";
-    public static final String PATH_TO_DOWNLOAD = "src/test/resources/download";
+    //public static final String PATH_TO_DOWNLOAD = "src/test/resources/download";
+    public static final String PATH_TO_DOWNLOAD = ConfigReader.getProperty("download.path");
 
     protected WebDriver driver;
     protected WebDriverWait wait;
