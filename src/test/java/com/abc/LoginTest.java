@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import page.LoginPage;
 
 import java.time.Duration;
 
@@ -25,29 +26,34 @@ public class LoginTest extends BaseTest{
         driver.get("https://the-internet.herokuapp.com/login");
         Thread.sleep(Long.parseLong("2000")); // added for visibility of page initial state
 
-        By userName = By.xpath("//input[@id='username']");
-        By password = By.xpath("//input[@id='password']");
-        By loginButton = By.xpath("//button[@type='submit']");
+//        By userName = By.xpath("//input[@id='username']");
+//        By password = By.xpath("//input[@id='password']");
+//        By loginButton = By.xpath("//button[@type='submit']");
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(userName));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(password));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginButton));
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(userName));
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(password));
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(loginButton));
 
-        log.info("Step 2: Enter username");
-        WebElement userNameElement = driver.findElement(userName);
-        String userNameValue = "tomsmith";
-        userNameElement.sendKeys(userNameValue);
+//        log.info("Step 2: Enter username");
+//        WebElement userNameElement = driver.findElement(userName);
+//        String userNameValue = "tomsmith";
+//        userNameElement.sendKeys(userNameValue);
+//
+//        log.info("Step 3: Enter password");
+//        WebElement passwordElement = driver.findElement(password);
+//        String passwordValue = "SuperSecretPassword!";
+//        passwordElement.sendKeys(passwordValue);
+//
+//        log.info("Step 4: Click Login button");
+//        WebElement loginButtonElement = driver.findElement(loginButton);
+//        loginButtonElement.click();
 
-        log.info("Step 3: Enter password");
-        WebElement passwordElement = driver.findElement(password);
-        String passwordValue = "SuperSecretPassword!";
-        passwordElement.sendKeys(passwordValue);
+        log.info("Step 2: Fill in credentials and click login");
+        LoginPage loginPage = new LoginPage(driver);
 
-        log.info("Step 4: Click Login button");
-        WebElement loginButtonElement = driver.findElement(loginButton);
-        loginButtonElement.click();
+        loginPage.fillCredentialsAndClickLogin("tomsmith","SuperSecretPassword!");
 
-        log.info("Step 5: Verify Login is successful");
+        log.info("Step 3: Verify Login is successful");
         By greenToaster = By.xpath("//div[@id='flash']");
         By logoutButton = By.xpath("//a[@href='/logout']");
 
