@@ -61,15 +61,6 @@ public class CarsPage extends Page {
         return getModelValueElement(make, model).isDisplayed();
     }
 
-//    public List<String> getModelOptions(){
-//        List<WebElement> options = shadowRootDropdownModel.findElements(By.cssSelector("option[part='option']"));
-//        List<String> modelOptions = new ArrayList<>();
-//        for (WebElement option : options) {
-//            modelOptions.add(option.getText());
-//        }
-//        return modelOptions;
-//    }
-
     public void selectModel(String make, String model) {
         getModelValueElement(make, model).click();
     }
