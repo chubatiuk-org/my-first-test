@@ -8,6 +8,8 @@ target/
 *.iws
 *.iml
 *.ipr
+CarsTestCopy.java
+CarsPageCopy.java
 
 ### Eclipse ###
 .apt_generated

@@ -11,7 +11,7 @@ public class CarsResultsPage extends Page {
         super(driver);
     }
 
-    private static By firstResult = By.cssSelector("a.vehicle-card-link");
+    private By firstResult = By.cssSelector("a.vehicle-card-link");
 
     public String getFirstResult() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstResult));
@@ -24,7 +24,7 @@ public class CarsResultsPage extends Page {
         return getFirstResult().toLowerCase().contains(text.toLowerCase());
     }
 
-    public static void clickFirstResult() {
+    public void clickFirstResult() {
         wait.until(ExpectedConditions.elementToBeClickable(firstResult));
         WebElement firstResultElement = driver.findElement(firstResult);
         firstResultElement.click();
