@@ -16,7 +16,7 @@ import page.LoginPage;
 public class CarsTest extends BaseTest{
 
     @Test
-    public void testCars() throws InterruptedException {
+    public void testCars() {
 
         Logger log = LoggerFactory.getLogger(CarsTest.class);
 
