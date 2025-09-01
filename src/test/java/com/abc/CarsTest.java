@@ -45,7 +45,7 @@ public class CarsTest extends BaseTest{
         log.info("Step 7: Verify " + modelValue + " value is selected in Model dropdown");
         Assert.assertTrue(carsPage.isModelSelected(makeValue, modelValue), modelValue + " value should be selected in Model dropdown");
 
-        log.info("Step 8: Click Show button");
+        log.info("Step 8: Click [Show] button");
         carsPage.clickShow();
 
         log.info("Step 9: Verify Search Results");
