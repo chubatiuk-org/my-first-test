@@ -17,7 +17,7 @@ public class ConfigReader {
             FileInputStream input = new FileInputStream("src/test/resources/config.properties");
             properties.load(input);
         } catch (IOException e) {
-            log.info("Could not load configuration file: {}", e.getMessage());
+            log.error("Could not load configuration file: {}", e.getMessage());
 
         }
     }
