@@ -30,7 +30,3 @@ public class LandingPage extends Page {
         return logoutButton.isDisplayed();
     }
 }
-
-
-
-
