@@ -1,27 +1,35 @@
 package page;
 
-import org.openqa.selenium.By;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage extends Page {
 
-    private By userName = By.xpath("//input[@id='username']");
-    private By password = By.xpath("//input[@id='password']");
-    private By loginButton = By.xpath("//button[@type='submit']");
+    @FindBy(xpath = "//input[@id='username']")
+    private WebElement userName;
+
+    @FindBy(xpath = "//input[@id='password']")
+    private WebElement password;
+
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement loginButton;
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
+    @Step("Login with username and password")
     public void fillCredentialsAndClickLogin(String userNameValue, String passwordValue) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(userName));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(password));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginButton));
 
-        driver.findElement(userName).sendKeys(userNameValue);
-        driver.findElement(password).sendKeys(passwordValue);
-        driver.findElement(loginButton).click();
+        wait.until(ExpectedConditions.visibilityOf(userName));
+        wait.until(ExpectedConditions.visibilityOf(password));
+        wait.until(ExpectedConditions.visibilityOf(loginButton));
+
+        userName.sendKeys(userNameValue);
+        password.sendKeys(passwordValue);
+        loginButton.click();
     }
 }
