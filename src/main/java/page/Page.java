@@ -9,7 +9,7 @@ public abstract class Page {
 
     public Page(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(20));
     }
 
 }
