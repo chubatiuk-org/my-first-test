@@ -1,7 +1,8 @@
 package com.apiTest;
 
-import api.UserRequest;
-import api.UserResponse;
+import gorestAPI.CreateUpdateUserApi;
+import gorestAPI.UserRequest;
+import gorestAPI.UserResponse;
 import com.testdata.ApiDataProvider;
 import io.restassured.http.ContentType;
 import org.slf4j.Logger;
@@ -11,34 +12,23 @@ import org.testng.annotations.Test;
 import util.ConfigReader;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
-public class CreateUserApi extends BaseTestApi{
+public class CreateUserApiTest extends BaseTestApi{
 
     private final String TOKEN = ConfigReader.getProperty("bearer.token");
-
     private int createdUserId;
 
     @Test(dataProvider = "userData", dataProviderClass = ApiDataProvider.class)
     public void createUser(String name, String gender, String email, String status) {
-        Logger log = LoggerFactory.getLogger(CreateUserApi.class);
+        Logger log = LoggerFactory.getLogger(CreateUserApiTest.class);
 
         log.info("Step 1: Create new user via API");
 
         UserRequest requestBody = new UserRequest(name, gender, email, status);
 
-        UserResponse userResponse =
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-        .when()
-                .post("/users")
-        .then()
-                .log().all()
-                .statusCode(201)
-                .extract()
-                .as(UserResponse.class);
+        CreateUpdateUserApi createUserApi = new CreateUpdateUserApi(TOKEN);
+        UserResponse userResponse = createUserApi.createUser(requestBody);
 
         createdUserId = userResponse.getId();
 
@@ -50,17 +40,7 @@ public class CreateUserApi extends BaseTestApi{
 
         log.info("Step 2: Get user by Id={}", createdUserId);
 
-        UserResponse createdUser =
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-            .when()
-                .get("/users/{id}", createdUserId)
-            .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .as(UserResponse.class);
+        UserResponse createdUser = createUserApi.getUserById(createdUserId);
 
         Assert.assertEquals(createdUser.getId(), createdUserId);
         Assert.assertEquals(createdUser.getName(), requestBody.getName());
@@ -71,25 +51,14 @@ public class CreateUserApi extends BaseTestApi{
 
     @Test(dataProvider = "userDataUpdate", dataProviderClass = ApiDataProvider.class)
     public void updateUser(String updatedName, String updatedGender, String updatedEmail, String updatedStatus) {
-        Logger log = LoggerFactory.getLogger(CreateUserApi.class);
+        Logger log = LoggerFactory.getLogger(CreateUserApiTest.class);
 
         log.info("Step 3: Update user with Id={}", createdUserId);
 
         UserRequest requestBodyUpdate = new UserRequest(updatedName, updatedGender, updatedEmail, updatedStatus);
 
-        UserResponse updatedUserResponse =
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
-                .body(requestBodyUpdate)
-        .when()
-                .patch("/users/{id}", createdUserId)
-        .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .as(UserResponse.class);
+        CreateUpdateUserApi createUserApi = new CreateUpdateUserApi(TOKEN);
+        UserResponse updatedUserResponse = createUserApi.updateUser(createdUserId, requestBodyUpdate);
 
         Assert.assertEquals(updatedUserResponse.getId(), createdUserId);
         Assert.assertEquals(updatedUserResponse.getName(), updatedName);
@@ -99,17 +68,7 @@ public class CreateUserApi extends BaseTestApi{
 
         log.info("Step 4: Get Updated user by Id={}", createdUserId);
 
-        UserResponse updatedUser =
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-            .when()
-                .get("/users/{id}", createdUserId)
-            .then()
-                .log().all()
-                .statusCode(200)
-                .extract()
-                .as(UserResponse.class);
+        UserResponse updatedUser = createUserApi.getUserById(createdUserId);
 
         Assert.assertEquals(updatedUser.getId(), createdUserId);
         Assert.assertEquals(updatedUser.getName(), updatedName);
@@ -118,15 +77,7 @@ public class CreateUserApi extends BaseTestApi{
         Assert.assertEquals(updatedUser.getStatus(), updatedStatus);
 
         log.info("Step 5: Delete user with Id={}", createdUserId);
-
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-        .when()
-                .delete("/users/{id}", createdUserId)
-        .then()
-                .log().all()
-                .statusCode(204);
+        createUserApi.deleteUser(createdUserId);
 
         log.info("Step 6: Verify user with Id={} is deleted", createdUserId);
 
@@ -138,7 +89,7 @@ public class CreateUserApi extends BaseTestApi{
                 .get("/users/{id}", createdUserId)
         .then()
                 .log().all()
-                .statusCode(404)
+                .statusCode(SC_NOT_FOUND)
                 .extract()
                 .path("message");
 

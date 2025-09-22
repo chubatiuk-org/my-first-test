@@ -1,4 +1,4 @@
-package api;
+package gorestAPI;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
