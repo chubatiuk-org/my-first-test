@@ -4,15 +4,12 @@ import gorestAPI.CreateUpdateUserApi;
 import gorestAPI.UserRequest;
 import gorestAPI.UserResponse;
 import com.testdata.ApiDataProvider;
-import io.restassured.http.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import util.ConfigReader;
 
-import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 public class CreateUserApiTest extends BaseTestApi{
 
@@ -80,18 +77,7 @@ public class CreateUserApiTest extends BaseTestApi{
         createUserApi.deleteUser(createdUserId);
 
         log.info("Step 6: Verify user with Id={} is deleted", createdUserId);
-
-        String deleteMessage =
-        given()
-                .header("Authorization", "Bearer " + TOKEN)
-                .accept(ContentType.JSON)
-        .when()
-                .get("/users/{id}", createdUserId)
-        .then()
-                .log().all()
-                .statusCode(SC_NOT_FOUND)
-                .extract()
-                .path("message");
+        String deleteMessage = createUserApi.verifyUserIsDeleted(createdUserId);
 
         Assert.assertEquals(deleteMessage, "Resource not found");
     }
