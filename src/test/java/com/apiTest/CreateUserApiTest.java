@@ -17,16 +17,17 @@ public class CreateUserApiTest extends BaseTestApi{
     private int createdUserId;
 
     @Test(dataProvider = "userData", dataProviderClass = ApiDataProvider.class)
-    public void createUser(String name, String gender, String email, String status) {
+    public void createUser(
+            String createdName, String createdGender, String createdEmail, String createdStatus,
+            String updatedName, String updatedGender, String updatedEmail, String updatedStatus) {
+
         Logger log = LoggerFactory.getLogger(CreateUserApiTest.class);
-
-        log.info("Step 1: Create new user via API");
-
-        UserRequest requestBody = new UserRequest(name, gender, email, status);
-
         CreateUpdateUserApi createUserApi = new CreateUpdateUserApi(TOKEN);
-        UserResponse userResponse = createUserApi.createUser(requestBody);
 
+        log.info("Step 1: Create new user with name {}", createdName);
+
+        UserRequest requestBody = new UserRequest(createdName, createdGender, createdEmail, createdStatus);
+        UserResponse userResponse = createUserApi.createUser(requestBody);
         createdUserId = userResponse.getId();
 
         Assert.assertEquals(userResponse.getName(), requestBody.getName());
@@ -44,17 +45,10 @@ public class CreateUserApiTest extends BaseTestApi{
         Assert.assertEquals(createdUser.getEmail(), requestBody.getEmail());
         Assert.assertEquals(createdUser.getGender(), requestBody.getGender());
         Assert.assertEquals(createdUser.getStatus(), requestBody.getStatus());
-}
 
-    @Test(dataProvider = "userDataUpdate", dataProviderClass = ApiDataProvider.class)
-    public void updateUser(String updatedName, String updatedGender, String updatedEmail, String updatedStatus) {
-        Logger log = LoggerFactory.getLogger(CreateUserApiTest.class);
-
-        log.info("Step 3: Update user with Id={}", createdUserId);
+        log.info("Step 3: Update user with Id={} and name {} to name {}", createdUserId, createdName, updatedName);
 
         UserRequest requestBodyUpdate = new UserRequest(updatedName, updatedGender, updatedEmail, updatedStatus);
-
-        CreateUpdateUserApi createUserApi = new CreateUpdateUserApi(TOKEN);
         UserResponse updatedUserResponse = createUserApi.updateUser(createdUserId, requestBodyUpdate);
 
         Assert.assertEquals(updatedUserResponse.getId(), createdUserId);

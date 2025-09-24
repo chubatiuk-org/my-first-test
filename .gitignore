@@ -10,6 +10,7 @@ target/
 *.ipr
 CarsTestCopy.java
 CarsPageCopy.java
+CreateUserApiTestcopy.java
 
 ### Eclipse ###
 .apt_generated
@@ -35,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+allure-report/
+allure-results/
+/targetallure-results/
