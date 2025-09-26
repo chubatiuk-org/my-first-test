@@ -35,3 +35,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/test/java/com/apiTest/CreateUserApiTestcopy.java
+/allure-report/
+/allure-results/
