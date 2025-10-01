@@ -40,8 +40,8 @@ public class DriverManager {
                 }
 
                 // Recommended for CI / GitHub Actions
-                chromeOptions.addArguments("--headless=new");   // run in headless mode
-                chromeOptions.addArguments("--no-sandbox");     // needed in Linux CI
+                //chromeOptions.addArguments("--headless=new");   // run in headless mode
+                //chromeOptions.addArguments("--no-sandbox");     // needed in Linux CI
                 chromeOptions.addArguments("--disable-dev-shm-usage"); // prevent shared memory issues
 
                 driver = new ChromeDriver(chromeOptions);
