@@ -9,6 +9,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public class DriverManager {
@@ -27,7 +30,21 @@ public class DriverManager {
 
                 chromeOptions.setExperimentalOption("prefs", map);
 
-                WebDriver driver = new ChromeDriver(chromeOptions);
+                WebDriver driver;
+                try {
+                    // Create a unique temporary user data directory
+                    Path tempUserDataDir = Files.createTempDirectory("chrome-user-data");
+                    chromeOptions.addArguments("--user-data-dir=" + tempUserDataDir.toAbsolutePath().toString());
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to create temporary Chrome user data directory", e);
+                }
+
+                // Recommended for CI / GitHub Actions
+                chromeOptions.addArguments("--headless=new");   // run in headless mode
+                chromeOptions.addArguments("--no-sandbox");     // needed in Linux CI
+                chromeOptions.addArguments("--disable-dev-shm-usage"); // prevent shared memory issues
+
+                driver = new ChromeDriver(chromeOptions);
 
                 driver.manage().window().setSize(new Dimension(width, height));
 
