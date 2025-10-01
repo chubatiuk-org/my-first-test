@@ -1,8 +1,16 @@
-name: Run Maven Tests Manually
+name: Run Maven Tests Manually for each class
 
 on:
-  workflow_dispatch:  # Manual trigger
-
+  workflow_dispatch:
+    inputs:
+      testClass:
+        description: 'Test class to run (leave empty to run all)'
+        required: false
+        default: ''
+      mavenProfile:
+        description: 'Maven profile to use (leave empty for default)'
+        required: false
+        default: ''
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,5 +33,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      - name: Run tests
-        run: mvn clean test
+      - name: Run Maven tests
+        run: |
+          CMD="mvn clean test"
+          if [ "${{ github.event.inputs.testClass }}" != "" ]; then
+            CMD="$CMD -Dtest=${{ github.event.inputs.testClass }}"
+          fi
+          if [ "${{ github.event.inputs.mavenProfile }}" != "" ]; then
+            CMD="$CMD -P${{ github.event.inputs.mavenProfile }}"
+          fi
+          echo "Running: $CMD"
+          $CMD
